@@ -8,6 +8,7 @@ import { FaWpforms } from "react-icons/fa";
 import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { Separator } from "@/components/ui/separator";
+import CreateFormBtn from "@/components/CreateFormBtn";
 
 const Dashboard = () => {
   return (
@@ -16,6 +17,9 @@ const Dashboard = () => {
         <CardStatsWrapper />
       </Suspense>
       <Separator className="my-6" />
+      <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
+      <Separator className="my-6" />
+      <CreateFormBtn></CreateFormBtn>
     </div>
   );
 };
@@ -82,7 +86,7 @@ interface StatsCardProps {
 function StatsCard(props: StatsCardProps) {
   const { title, icon, helperText, value, loading, classname } = props;
   return (
-    <Card className={classname}>
+    <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
