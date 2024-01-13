@@ -23,6 +23,8 @@ model Form {
   submissions    Int              @default(0)
   shareURL       String           @default(uuid())
   FormSubmission FormSubmission[]
+
+  @@unique([userId, name])
 }
 
 model FormSubmission {
@@ -31,5 +33,4 @@ model FormSubmission {
   createdAt DateTime @default(now())
   content   String
   form      Form     @relation(fields: [formId], references: [id])
-
 }

@@ -1,54 +1,51 @@
 "use client";
 
-import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogFooter,
-  DialogTrigger,
+  DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import {
   Form,
-  FormField,
-  FormLabel,
   FormControl,
-  FormDescription,
+  FormField,
   FormItem,
+  FormLabel,
   FormMessage,
-  useFormField,
 } from "@/components/ui/form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 
-import { BsFileEarmarkPlus } from "react-icons/bs";
-import { ImSpinner2 } from "react-icons/im";
+import { formSchema, formSchemaType } from "@/schemas/formSchema";
 import { useForm } from "react-hook-form";
+import { ImSpinner2 } from "react-icons/im";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Toast } from "./ui/toast";
 import { toast } from "./ui/use-toast";
+import { CreateForm } from "@/actions/form";
 
-const formSchema = z.object({
-  name: z.string().min(3).max(50),
-  description: z.string().optional(),
-});
-
-type formSchemaType = z.infer<typeof formSchema>;
+import { BsFileEarmarkPlus } from "react-icons/bs";
 
 const CreateFormBtn = () => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(data: formSchemaType) {
+  async function onSubmit(data: formSchemaType) {
     try {
+      const formId = await CreateForm(data);
+      toast({
+        title: "Success",
+        description: "Form created successfully",
+        variant: "default",
+      });
     } catch (error) {
       toast({
         title: "Error",
@@ -61,7 +58,20 @@ const CreateFormBtn = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create New Form</Button>
+        <Button
+          variant={"outline"}
+          className="group border border-primary/20 h-[190px] items-center 
+        justify-center flex flex-col hover:border-primary hover:cursor-pointer 
+        border-dashed gap-4 "
+        >
+          <BsFileEarmarkPlus
+            className="h-8 w-8 text-muted-foreground 
+          group-hover:text-primary"
+          />
+          <p className="font-bold text-lg text-muted-foreground group-hover:text-primary">
+            Create New Form
+          </p>
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -71,10 +81,7 @@ const CreateFormBtn = () => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={() => form.handleSubmit(onSubmit)}
-            className="space-y-2"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
               name="name"
@@ -105,6 +112,7 @@ const CreateFormBtn = () => {
         </Form>
         <DialogFooter>
           <Button
+            onClick={form.handleSubmit(onSubmit)}
             className="w-full mt-4"
             disabled={form.formState.isSubmitting}
           >
