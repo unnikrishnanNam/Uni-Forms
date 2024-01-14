@@ -57,5 +57,35 @@ export async function CreateForm(data: formSchemaType) {
   if (!form) {
     throw new Error("Failed to create form");
   }
-  form.id;
+  return form.id;
+}
+
+export async function GetForms() {
+  const user = await currentUser();
+  if (!user) {
+    throw new UserNotFoundErr("User not found");
+  }
+  const forms = await prisma.form.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return forms;
+}
+
+export async function GetFormById(id: number) {
+  const user = await currentUser();
+  if (!user) {
+    throw new UserNotFoundErr("User not found");
+  }
+
+  return await prisma.form.findUnique({
+    where: {
+      userId: user.id,
+      id: id,
+    },
+  });
 }

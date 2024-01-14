@@ -32,8 +32,10 @@ import { toast } from "./ui/use-toast";
 import { CreateForm } from "@/actions/form";
 
 import { BsFileEarmarkPlus } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 const CreateFormBtn = () => {
+  const router = useRouter();
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
   });
@@ -46,6 +48,7 @@ const CreateFormBtn = () => {
         description: "Form created successfully",
         variant: "default",
       });
+      router.push(`/builder/${formId}`);
     } catch (error) {
       toast({
         title: "Error",
@@ -68,7 +71,7 @@ const CreateFormBtn = () => {
             className="h-8 w-8 text-muted-foreground 
           group-hover:text-primary"
           />
-          <p className="font-bold text-lg text-muted-foreground group-hover:text-primary">
+          <p className="font-bold text-lg  text-muted-foreground group-hover:text-primary">
             Create New Form
           </p>
         </Button>
