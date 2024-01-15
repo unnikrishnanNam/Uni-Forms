@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.className} p-0`}>
+        <body className={`${inter.className} p-0 `}>
           <DesignerContextProvider>
             <ThemeProvider
               attribute="class"
